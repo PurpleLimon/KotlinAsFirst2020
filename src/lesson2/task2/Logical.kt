@@ -3,6 +3,8 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import lesson4.task1.abs
+import java.lang.Math.sqrt
 
 /**
  * Пример
@@ -18,7 +20,16 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = TODO()
+fun isNumberHappy(number: Int): Boolean {
+    val digit1 = number / 1000
+    val digit2 = (number / 100) % 10
+    val digit3 = (number / 10) % 10
+    val digit4 = number % 10
+    return when {
+        (digit1 + digit2 == digit3 + digit4) -> true
+        else -> false
+    }
+}
 
 /**
  * Простая (2 балла)
@@ -27,7 +38,8 @@ fun isNumberHappy(number: Int): Boolean = TODO()
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = TODO()
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
+    (kotlin.math.abs(x1 - x2) == (kotlin.math.abs(y1 - y2))) || (x1 == x2) || (y1 == y2)
 
 
 /**
@@ -36,7 +48,30 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = TODO()
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
-fun daysInMonth(month: Int, year: Int): Int = TODO()
+fun daysInMonth(month: Int, year: Int): Int {
+
+    if (((year % 100 == 0) && (year % 400 == 0)) || (year % 100 != 0)) {
+        return when {
+            ((month < 10) && (month % 2 == 1) && (month != 2) || (month == 8)) -> 31
+            ((month < 10) && (month != 8) && (month % 2 == 0) && (month != 2)) -> 30
+            ((month >= 10) && (month % 2 == 0)) -> 31
+            ((month >= 10) && (month % 2 == 1)) -> 30
+            ((month == 2) && (year % 4 == 0)) -> 29
+            ((month == 2) && (year % 4 != 0)) -> 28
+            else -> -1
+        }
+    } else {
+        return when {
+            ((month < 10) && (month % 2 == 1) && (month != 2) || (month == 8)) -> 31
+            ((month < 10) && (month != 8) && (month % 2 == 0) && (month != 2)) -> 30
+            ((month >= 10) && (month % 2 == 0)) -> 31
+            ((month >= 10) && (month % 2 == 1)) -> 30
+            (month == 2) -> 28
+            else -> -1
+        }
+
+    }
+}
 
 /**
  * Простая (2 балла)
@@ -48,7 +83,13 @@ fun daysInMonth(month: Int, year: Int): Int = TODO()
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean = TODO()
+): Boolean {
+    val S = sqrt(sqr(kotlin.math.abs(x1 - x2)) + sqr(kotlin.math.abs(y1 - y2)))
+    if ((S + r1) <=  r2) {
+        return true
+    } else
+        return false
+}
 
 /**
  * Средняя (3 балла)
@@ -59,4 +100,11 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = TODO()
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+    return when {
+        (((a <= r) && (b <= s)) || ((b <= r) && (a <= s))) -> true
+        ((a <= r) && (c <= s)) || ((c <= r) && (a <= s)) -> true
+        ((b <= r) && (c <= s)) || ((c <= r) && (b <= s)) -> true
+        else -> false
+    }
+}
