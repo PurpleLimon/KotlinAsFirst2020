@@ -2,11 +2,9 @@
 
 package lesson3.task1
 
-import java.lang.Math.pow
 import java.lang.StrictMath.max
 import java.lang.StrictMath.min
 import kotlin.math.pow
-import kotlin.math.round
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -114,7 +112,7 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var i: Int = 1
+    var i= 1
     do {
         i += 1
     } while (n % i != 0)
@@ -127,7 +125,7 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var i: Int = 1
+    var i = 1
     do {
         i += 1
     } while (n % i != 0)
@@ -151,7 +149,7 @@ fun maxDivisor(n: Int): Int {
  * этого для какого-либо начального X > 0.
  */
 fun collatzSteps(x: Int): Int {
-    var counter: Int = 0
+    var counter = 0
     var y = x
     if (x == 1) return 0
     else {
@@ -193,7 +191,7 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var indicator: Boolean = true
+    var indicator = true
     val minMN = min(m, n)
     for (i in 2..minMN) {
         if ((m % i == 0) && (n % i == 0)) indicator = false
@@ -218,7 +216,7 @@ fun revert(n: Int): Int {
         k += 1
     } while (x > 0)
     var y = 0
-    var digit = 0
+    var digit: Int
     var i = n
     do {
         k -= 1
@@ -246,9 +244,8 @@ fun isPalindrome(n: Int): Boolean {
         y /= 10
         k += 1
     } while (y > 0)
-    var i = n
     if (k % 2 != 0) {
-        val RightHalf = revert((n % ((10.0).pow(k / 2).toDouble())).toInt())
+        val RightHalf = revert((n % ((10.0).pow(k / 2))).toInt())
         return if (RightHalf == ((n / ((10.0).pow((k / 2).toDouble() + 1.0)))).toInt()) true
         else false
     } else {
@@ -267,19 +264,14 @@ fun isPalindrome(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun hasDifferentDigits(n: Int): Boolean {
-    var flag: Boolean = 
+    var flag = false
     var m = n
-    var i = n
+    val x = m % 10
     do {
-        var x = m % 10
-        do {
-            m = m / 10
-            if (x == m % 10) flag = true
-            if (flag == true) break
-        } while (m > 9)
+        m = m / 10
+        if (x != m % 10) flag = true
         if (flag == true) break
-        i = i / 10
-    } while (i > 9)
+    } while (m > 9)
     return flag
 }
 
@@ -314,7 +306,21 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var k = 0
+    var sqrNumber : Int
+    var i = 1
+    do {
+        sqrNumber = i * i
+        k += digitNumber(sqrNumber)
+        i += 1
+    } while (k < n)
+    return if (k == n) sqrNumber % 10
+    else {
+        sqrNumber = sqrNumber / ((10.0).pow((k - n).toDouble())).toInt()
+        sqrNumber % 10
+    }
+}
 
 /**
  * Сложная (5 баллов)
@@ -325,4 +331,22 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var k = 2
+    var fibNumber : Int
+    var fib1 = 1
+    var fib2 = 1
+    if ((n == 1) || (n == 2)) return 1
+    do {
+        fibNumber = fib1 + fib2
+        k += digitNumber(fibNumber)
+        fib1 = fib2
+        fib2 = fibNumber
+    } while (k < n)
+    return if (k == n) fibNumber % 10
+    else {
+        fibNumber = fibNumber / ((10.0).pow((k - n).toDouble())).toInt()
+        fibNumber % 10
+    }
+}
+
