@@ -104,7 +104,7 @@ fun timeForHalfWay(
     if (v1 * t1 >= halfWay) {
         return halfWay / v1
     } else
-        if (v1 * t2 + v2 * t2 >= halfWay) {
+        if (v1 * t1 + v2 * t2 >= halfWay) {
             return t1 + (halfWay - v1 * t1) / v2
         } else
             if (v1 * t1 + v2 * t2 + v3 * t3 >= halfWay) {
@@ -172,15 +172,15 @@ fun rookOrBishopThreatens(
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     var s = a + b + c
-    val a = max(max(a, b), c)
-    val c = min(min(a, b), c)
-    val b = s - a - b
+    val x = max(max(a, b), c)
+    val y = min(min(a, b), c)
+    val z = s - y - x
 
 
     return when {
-        a > b + c -> -1
-        (sqr(a) < sqr(b) + sqr(c)) -> 0
-        (sqr(a) == sqr(b) + sqr(c)) -> 1
+        x > y + z -> -1
+        (sqr(x) < sqr(y) + sqr(z)) -> 0
+        (sqr(x) == sqr(y) + sqr(z)) -> 1
         else -> 2
 
     }
@@ -199,9 +199,10 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
         ((b < c) || (d < a)) -> -1
         ((a < c) && (c < b) && (b < d)) -> b - c
         ((a < c) && (c < b) && (b > d)) -> d - c
-        ((a==c) && ((b<d) || (b==d))) -> b - a
-        ((a>c) && (a<d) && (b<d)) -> b-a
-        ((b==c)&& (a<d)) -> 0
-        else -> d-a
+        ((a < c) && (c < b) && (b == d)) -> d - c
+        ((a == c) && ((b < d) || (b == d))) -> b - a
+        ((a > c) && (a < d) && (b < d)) -> b - a
+        ((b == c) && (a < d)) -> 0
+        else -> d - a
     }
 }

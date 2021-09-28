@@ -2,6 +2,10 @@
 
 package lesson3.task1
 
+import java.lang.Math.pow
+import java.lang.StrictMath.max
+import java.lang.StrictMath.min
+import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.sqrt
 
@@ -149,7 +153,7 @@ fun maxDivisor(n: Int): Int {
 fun collatzSteps(x: Int): Int {
     var counter: Int = 0
     var y = x
-    if (x==1) return 0
+    if (x == 1) return 0
     else {
         do {
             if (y % 2 == 0) {
@@ -170,7 +174,16 @@ fun collatzSteps(x: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    var i: Int = max(m, n)
+    if ((i % m == 0) && (i % n == 0)) return i
+    else {
+        do {
+            i += 1
+        } while ((i % m != 0) || (i % n != 0))
+        return i
+    }
+}
 
 /**
  * Средняя (3 балла)
@@ -179,7 +192,16 @@ fun lcm(m: Int, n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    var indicator: Boolean = true
+    val minMN = min(m, n)
+    for (i in 2..minMN) {
+        if ((m % i == 0) && (n % i == 0)) indicator = false
+    }
+    if (indicator == true) return true
+    else return false
+
+}
 
 /**
  * Средняя (3 балла)
@@ -188,7 +210,25 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var k = 0
+    var x = n
+    do {
+        x = x / 10
+        k += 1
+    } while (x > 0)
+    var y = 0
+    var digit = 0
+    var i = n
+    do {
+        k -= 1
+        digit = i % 10
+        y = y + digit * 10.0.pow(k.toDouble()).toInt()
+        i = i / 10
+    } while (i > 0)
+    return y
+
+}
 
 /**
  * Средняя (3 балла)
@@ -199,7 +239,24 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    var y = n
+    var k = 0
+    do {
+        y /= 10
+        k += 1
+    } while (y > 0)
+    var i = n
+    if (k % 2 != 0) {
+        val RightHalf = revert((n % ((10.0).pow(k / 2).toDouble())).toInt())
+        return if (RightHalf == ((n / ((10.0).pow((k / 2).toDouble() + 1.0)))).toInt()) true
+        else false
+    } else {
+        val RightHalf = revert((n % ((10.0).pow((k / 2).toDouble()))).toInt())
+        return if (RightHalf == (n / ((10.0).pow((k / 2).toDouble()))).toInt()) true
+        else false
+    }
+}
 
 /**
  * Средняя (3 балла)
@@ -209,7 +266,22 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var flag: Boolean = 
+    var m = n
+    var i = n
+    do {
+        var x = m % 10
+        do {
+            m = m / 10
+            if (x == m % 10) flag = true
+            if (flag == true) break
+        } while (m > 9)
+        if (flag == true) break
+        i = i / 10
+    } while (i > 9)
+    return flag
+}
 
 /**
  * Средняя (4 балла)
