@@ -71,21 +71,14 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String {
-    if (age % 100 !in 10..19) {
-        if (age % 10 == 1) {
-            return "$age год"
-        }
-        if (age % 10 in 2..4) {
-            return "$age года"
-        }
-        if (age % 10 in 5..9 || age % 10 == 0) {
-            return "$age лет"
-        }
-    }
-    if (age % 100 in 10..19) {
-        return "$age лет"
-    } else return "0"
+fun ageDescription(age: Int): String = when {
+    age / 10 % 10 == 1 -> "$age лет"
+    age % 10 == 0 -> "$age лет"
+    age % 10 == 1 -> "$age год"
+    age % 10 in 5..9 -> "$age лет"
+    age % 10 in 2..4 -> "$age года"
+    else -> "Ошибка"
+
 }
 
 /**
@@ -101,16 +94,11 @@ fun timeForHalfWay(
     t3: Double, v3: Double
 ): Double {
     val halfWay = (t1 * v1 + t2 * v2 + t3 * v3) / 2
-    if (v1 * t1 >= halfWay) {
-        return halfWay / v1
-    } else
-        if (v1 * t1 + v2 * t2 >= halfWay) {
-            return t1 + (halfWay - v1 * t1) / v2
-        } else
-            if (v1 * t1 + v2 * t2 + v3 * t3 >= halfWay) {
-                return t1 + t2 + (halfWay - v1 * t1 - v2 * t2) / (v3)
-            } else return 0.0
+    return if (v1 * t1 >= halfWay) halfWay / v1
+    else if (v1 * t1 + v2 * t2 >= halfWay) t1 + (halfWay - v1 * t1) / v2
+    else (t1 + t2 + (halfWay - v1 * t1 - v2 * t2) / (v3))
 }
+
 
 /**
  * Простая (2 балла)
@@ -126,15 +114,13 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-    if (rookX1 == kingX || rookY1 == kingY) {
-        if (rookX2 == kingX || rookY2 == kingY) {
-            return 3
-        } else
-            return 1
-    } else if (rookX2 == kingX || rookY2 == kingY) {
-        return 2
-    } else
-        return 0
+    return when {
+        ((rookX1 == kingX || rookY1 == kingY)
+                && (rookX2 == kingX || rookY2 == kingY)) -> 3
+        (rookX2 == kingX || rookY2 == kingY) -> 2
+        (rookX1 == kingX || rookY1 == kingY) -> 1
+        else -> 0
+    }
 }
 
 /**
@@ -151,15 +137,14 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int {
-    return when {
+): Int =
+    when {
         rookX != kingX && kingY != rookY && (abs(kingX - bishopX) != abs(kingY - bishopY)) -> 0
         (rookX == kingX || kingY == rookY) && (abs(kingX - bishopX) != abs(kingY - bishopY)) -> 1
         (rookX != kingX && kingY != rookY) && (abs(kingX - bishopX) == abs(kingY - bishopY)) -> 2
         (rookX == kingX || kingY == rookY) && (abs(kingX - bishopX) == abs(kingY - bishopY)) -> 3
         else -> 1
     }
-}
 
 
 /**
@@ -171,9 +156,9 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    var s = a + b + c
-    val x = max(max(a, b), c)
-    val y = min(min(a, b), c)
+    val s = a + b + c
+    val x = maxOf(a, b, c)
+    val y = minOf(a, b, c)
     val z = s - y - x
 
 
@@ -195,14 +180,14 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    val X = maxOf(a, b, c, d)
+    val Y = minOf(a, b, c, d)
     return when {
-        ((b < c) || (d < a)) -> -1
-        ((a < c) && (c < b) && (b < d)) -> b - c
-        ((a < c) && (c < b) && (b > d)) -> d - c
-        ((a < c) && (c < b) && (b == d)) -> d - c
-        ((a == c) && ((b < d) || (b == d))) -> b - a
-        ((a > c) && (a < d) && (b < d)) -> b - a
-        ((b == c) && (a < d)) -> 0
-        else -> d - a
+        X - Y > (b - a + d - c) -> -1
+        X - Y == (b - a + d - c) -> 0
+        (X - Y == abs(d - a)) && (b==d) -> abs(d-a)
+        X - Y == abs(d - a) -> abs(b - c)
+        (X - Y == d - c) || (X - Y == b - a) -> abs(X - Y - (b - a) - (d - c))
+        else -> abs(b - c)
     }
 }
