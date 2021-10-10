@@ -238,11 +238,15 @@ fun isPalindrome(n: Int): Boolean {
         true
     else if (k % 2 != 0) {
         val rightHalf = revert((n % ((10.0).pow(k / 2))).toInt())
-        return rightHalf == ((n / ((10.0).pow((k / 2).toDouble() + 1.0)))).toInt()
+        var leftHalf = ((n / ((10.0).pow((k / 2).toDouble() + 1.0)))).toInt()
+        if (leftHalf % 10 == 0) do {
+            leftHalf/=10
+        } while(leftHalf % 10 == 0)
+        return (leftHalf==rightHalf)
     } else {
         val rightHalf = revert((n % ((10.0).pow((k / 2).toDouble()))).toInt())
         var leftHalf = (n / ((10.0).pow((k / 2).toDouble()))).toInt()
-        do {
+        if (leftHalf % 10 == 0) do {
             if (leftHalf % 10 == 0) {
                 leftHalf /= 10
 
