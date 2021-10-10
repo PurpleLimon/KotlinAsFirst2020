@@ -185,9 +185,10 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     return when {
         X - Y > (b - a + d - c) -> -1
         X - Y == (b - a + d - c) -> 0
-        (X - Y == abs(d - a)) && (b==d) -> abs(d-a)
+        (X - Y == abs(d - a)) && (b == d) -> abs(d - a)
         X - Y == abs(d - a) -> abs(b - c)
         (X - Y == d - c) || (X - Y == b - a) -> abs(X - Y - (b - a) - (d - c))
+        ((X - Y) < (b - a + d - c)) && (d < b) -> d - a
         else -> abs(b - c)
     }
 }
