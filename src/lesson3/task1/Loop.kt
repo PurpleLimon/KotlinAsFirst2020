@@ -193,7 +193,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     var indicator = true
     val minMN = min(m, n)
     for (i in 2..minMN) {
-        if ((m % i == 0) && (n % i == 0)) indicator = false
+        if ((m % i == 0) && (n % i == 0)) return false
     }
     return indicator
 
@@ -207,7 +207,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun revert(n: Int): Int {
-    var k = digitNumber((n))
+    var k = digitNumber(n)
     var y = 0
     var digit: Int
     var i = n
@@ -231,18 +231,16 @@ fun revert(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun isPalindrome(n: Int): Boolean {
-    val k = digitNumber((n))
-    return if (k == 0)
-        false
-    else if (k == 1)
+    val k = digitNumber(n)
+    return if (k == 1)
         true
     else if (k % 2 != 0) {
         val rightHalf = revert((n % ((10.0).pow(k / 2))).toInt())
         var leftHalf = ((n / ((10.0).pow((k / 2).toDouble() + 1.0)))).toInt()
         if (leftHalf % 10 == 0) do {
-            leftHalf/=10
-        } while(leftHalf % 10 == 0)
-        return (leftHalf==rightHalf)
+            leftHalf /= 10
+        } while (leftHalf % 10 == 0)
+        leftHalf == rightHalf
     } else {
         val rightHalf = revert((n % ((10.0).pow((k / 2).toDouble()))).toInt())
         var leftHalf = (n / ((10.0).pow((k / 2).toDouble()))).toInt()
@@ -253,7 +251,7 @@ fun isPalindrome(n: Int): Boolean {
             }
         } while (leftHalf % 10 == 0)
 
-        return rightHalf == leftHalf
+        rightHalf == leftHalf
     }
 }
 
@@ -319,11 +317,7 @@ fun squareSequenceDigit(n: Int): Int {
         k += digitNumber(sqrNumber)
         i += 1
     } while (k < n)
-    return if (k == n) sqrNumber % 10
-    else {
-        sqrNumber /= ((10.0).pow((k - n).toDouble())).toInt()
-        sqrNumber % 10
-    }
+    return fibN(k, n, sqrNumber)
 }
 
 /**

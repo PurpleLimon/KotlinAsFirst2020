@@ -156,7 +156,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val sumOfAllTriangleSides = a + b + c
     val biggestSide = maxOf(a, b, c)
     val smallestSide = minOf(a, b, c)
-    val averageSide = sumOfAllTriangleSides - smallestSide - biggestSide
+    val averageSide = sumOfAllTriangleSides - biggestSide - smallestSide
 
 
     return when {
