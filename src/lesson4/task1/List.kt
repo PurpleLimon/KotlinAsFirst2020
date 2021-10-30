@@ -256,11 +256,11 @@ fun factorizeToString(n: Int): String {
 fun convert(n: Int, base: Int): List<Int> {
     var result = mutableListOf<Int>()
     var m = n
-    while (m > 0) {
+    do {
         result = (listOf(m % base) + result).toMutableList()
         m /= base
         if (m == 0) break
-    }
+    } while (m > 0)
     return result
 }
 
@@ -433,7 +433,7 @@ fun russian(n: Int): String {
         }
         if ((c == 3) && ((m / 10) % 10 != 1)) {
             when (m % 10) {
-                0 -> result += ""
+                0 -> result = " тысяч$result"
                 1 -> result = " одна тысяча$result"
                 2 -> result = " две тысячи$result"
                 3 -> result = " три тысячи$result"
@@ -464,7 +464,21 @@ fun russian(n: Int): String {
             m /= 100
             if (m == 0) break
         }
-        if (c == 4) {
+        if ((c == 4) && ("тысяч" in result)) {
+            when (m % 10) {
+                2 -> result = " двадцать$result"
+                3 -> result = " тридцать$result"
+                4 -> result = " сорок$result"
+                5 -> result = " пятьдесят$result"
+                6 -> result = " шестьдесят$result"
+                7 -> result = " семьдесят$result"
+                8 -> result = " восемьдесят$result"
+                9 -> result = " девяносто$result"
+            }
+            c += 1
+            m /= 10
+            if (m == 0) break
+        } else if ((c == 4) && ("тысяч" !in result)) {
             when (m % 10) {
                 0 -> result = " тысяч$result"
                 2 -> result = " двадцать$result"
