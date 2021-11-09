@@ -124,9 +124,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  */
 fun abs(v: List<Double>): Double {
     var sumOfSqr = 0.0
-    for (element in 0 until v.size) {
-        sumOfSqr += sqr(v[element])
-    }
+    for (element in v) sumOfSqr += sqr(element)
     return sqrt(sumOfSqr)
 }
 
@@ -140,7 +138,7 @@ fun mean(list: List<Double>): Double {
     for (i in 0 until list.size) {
         s += list[i]
     }
-    return if (s == 0.0) s
+    return if (list.isEmpty()) s
     else s / list.size
 }
 
@@ -154,9 +152,9 @@ fun mean(list: List<Double>): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    val meanList = mean(list)
+    val mean = mean(list)
     for (i in 0 until list.size) {
-        list[i] = list[i] - meanList
+        list[i] = list[i] - mean
     }
     return list
 }
@@ -170,7 +168,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  */
 fun times(a: List<Int>, b: List<Int>): Int {
     var c = 0
-    for (i in 0 until a.size) {
+    for (i in a.indices) {
         c += a[i] * b[i]
     }
     return c
@@ -186,7 +184,7 @@ fun times(a: List<Int>, b: List<Int>): Int {
  */
 fun polynom(p: List<Int>, x: Int): Int {
     var s = 0
-    for (i in 0 until p.size) {
+    for (i in p.indices) {
         s += p[i] * x.toDouble().pow(i).toInt()
     }
     return s
@@ -204,9 +202,9 @@ fun polynom(p: List<Int>, x: Int): Int {
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
     var s = 0
-    for (i in 0 until list.size) {
+    for (i in list.indices) {
         list[i] += s
-        s = +list[i]
+        s = list[i]
     }
     return list
 }
@@ -242,7 +240,7 @@ fun factorize(n: Int): List<Int> {
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
 fun factorizeToString(n: Int): String {
-    var stringOfDivisors = factorize(n)
+    val stringOfDivisors = factorize(n)
     return stringOfDivisors.joinToString(separator = "*")
 }
 
@@ -254,13 +252,13 @@ fun factorizeToString(n: Int): String {
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    var result = mutableListOf<Int>()
+    val result = mutableListOf<Int>()
     var m = n
     do {
-        result = (listOf(m % base) + result).toMutableList()
+        result.add(m % base)
         m /= base
-        if (m == 0) break
     } while (m > 0)
+    result.reverse()
     return result
 }
 
@@ -298,8 +296,8 @@ fun convertToString(n: Int, base: Int): String {
  */
 fun decimal(digits: List<Int>, base: Int): Int {
     var result = 0
-    for (digit in 0 until digits.size) {
-        result += (digits[digit] * (base.toDouble().pow(digits.size - digit - 1)).toInt())
+    for (i in digits.indices) {
+        result += (digits[i] * (base.toDouble().pow(digits.size - i - 1)).toInt())
     }
     return result
 }
@@ -318,11 +316,12 @@ fun decimal(digits: List<Int>, base: Int): Int {
  */
 fun decimalFromString(str: String, base: Int): Int {
     var result = 0
-    for (element in 0 until str.length) {
+    for (element in str.indices) {
+        val k = (base.toDouble().pow(str.length - element - 1)).toInt()
         result += if (str[element] in 'a'..'z') {
-            (str[element] - 'a' + 10) * (base.toDouble().pow(str.length - element - 1)).toInt()
+            (str[element] - 'a' + 10) * k
         } else {
-            (str[element] - '0') * (base.toDouble().pow(str.length - element - 1)).toInt()
+            (str[element] - '0') * k
         }
     }
     return result
@@ -342,9 +341,9 @@ fun roman(n: Int): String {
     val lat = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     val rom = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     var m = n
-    for (i in lat) {
-        while (m - i >= 0) {
-            m -= i
+    for (number in lat) {
+        while (m - number >= 0) {
+            m -= number
             result.append(rom[k])
         }
         k += 1
@@ -360,39 +359,38 @@ fun roman(n: Int): String {
  * 239264 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    var result = ""
+    val result = mutableListOf<String>()
     var c = 0
     var m = n
     if (n == 0) return "ноль"
     do {
         if (((m / 10) % 10 != 1) && (c == 0)) {
             when (m % 10) {
-                0 -> result += ""
-                1 -> result += " один"
-                2 -> result += " два"
-                3 -> result += " три"
-                4 -> result += " четыре"
-                5 -> result += " пять"
-                6 -> result += " шесть"
-                7 -> result += " семь"
-                8 -> result += " восемь"
-                9 -> result += " девять"
+                1 -> result += "один"
+                2 -> result += "два"
+                3 -> result += "три"
+                4 -> result += "четыре"
+                5 -> result += "пять"
+                6 -> result += "шесть"
+                7 -> result += "семь"
+                8 -> result += "восемь"
+                9 -> result += "девять"
             }
             m /= 10
             c += 1
             if (m == 0) break
         } else if (((m / 10) % 10 == 1) && (c == 0)) {
             when (m % 10) {
-                0 -> result += " десять"
-                1 -> result += " одиннадцать"
-                2 -> result += " двенадцать"
-                3 -> result += " тринадцать"
-                4 -> result += " четырнадцать"
-                5 -> result += " пятнадцать"
-                6 -> result += " шестнадцать"
-                7 -> result += " семнадцать"
-                8 -> result += " восемнадцать"
-                9 -> result += " девятнадцать"
+                0 -> result.add("десять")
+                1 -> result.add("одиннадцать")
+                2 -> result.add("двенадцать")
+                3 -> result.add("тринадцать")
+                4 -> result.add("четырнадцать")
+                5 -> result.add("пятнадцать")
+                6 -> result.add("шестнадцать")
+                7 -> result.add("семнадцать")
+                8 -> result.add("восемнадцать")
+                9 -> result.add("девятнадцать")
             }
             m /= 100
             c += 2
@@ -400,15 +398,14 @@ fun russian(n: Int): String {
         }
         if (c == 1) {
             when (m % 10) {
-                0 -> result += ""
-                2 -> result = " двадцать$result"
-                3 -> result = " тридцать$result"
-                4 -> result = " сорок$result"
-                5 -> result = " пятьдесят$result"
-                6 -> result = " шестьдесят$result"
-                7 -> result = " семьдесят$result"
-                8 -> result = " восемьдесят$result"
-                9 -> result = " девяносто$result"
+                2 -> result.add("двадцать")
+                3 -> result.add("тридцать")
+                4 -> result.add("сорок")
+                5 -> result.add("пятьдесят")
+                6 -> result.add("шестьдесят")
+                7 -> result.add("семьдесят")
+                8 -> result.add("восемьдесят")
+                9 -> result.add("девяносто")
             }
             m /= 10
             c += 1
@@ -416,16 +413,15 @@ fun russian(n: Int): String {
         }
         if ((c == 2) || (c == 5)) {
             when (m % 10) {
-                0 -> result += ""
-                1 -> result = " сто$result"
-                2 -> result = " двести$result"
-                3 -> result = " триста$result"
-                4 -> result = " четыреста$result"
-                5 -> result = " пятьсот$result"
-                6 -> result = " шестьсот$result"
-                7 -> result = " семьсот$result"
-                8 -> result = " восемьсот$result"
-                9 -> result = " девятьсот$result"
+                1 -> result.add("сто")
+                2 -> result.add("двести")
+                3 -> result.add("триста")
+                4 -> result.add("четыреста")
+                5 -> result.add("пятьсот")
+                6 -> result.add("шестьсот")
+                7 -> result.add("семьсот")
+                8 -> result.add("восемьсот")
+                9 -> result.add("девятьсот")
             }
             m /= 10
             c += 1
@@ -433,67 +429,53 @@ fun russian(n: Int): String {
         }
         if ((c == 3) && ((m / 10) % 10 != 1)) {
             when (m % 10) {
-                0 -> result = " тысяч$result"
-                1 -> result = " одна тысяча$result"
-                2 -> result = " две тысячи$result"
-                3 -> result = " три тысячи$result"
-                4 -> result = " четыре тысячи$result"
-                5 -> result = " пять тысяч$result"
-                6 -> result = " шесть тысяч$result"
-                7 -> result = " семь тысяч$result"
-                8 -> result = " восемь тысяч$result"
-                9 -> result = " девять тысяч$result"
+                0 -> result.add("тысяч")
+                1 -> result.add("одна тысяча")
+                2 -> result.add("две тысячи")
+                3 -> result.add("три тысячи")
+                4 -> result.add("четыре тысячи")
+                5 -> result.add("пять тысяч")
+                6 -> result.add("шесть тысяч")
+                7 -> result.add("семь тысяч")
+                8 -> result.add("восемь тысяч")
+                9 -> result.add("девять тысяч")
             }
             m /= 10
             c += 1
             if (m == 0) break
         } else if (((m / 10) % 10 == 1) && (c == 3)) {
             when (m % 10) {
-                0 -> result = " десять тысяч$result"
-                1 -> result = " одиннадцать тысяч$result"
-                2 -> result = " двенадцать тысяч$result"
-                3 -> result = " тринадцать тысяч$result"
-                4 -> result = " четырнадцать тысяч$result"
-                5 -> result = " пятнадцать тысяч$result"
-                6 -> result = " шестнадцать тысяч$result"
-                7 -> result = " семнадцать тысяч$result"
-                8 -> result = " восемнадцать тысяч$result"
-                9 -> result = " девятнадцать тысяч$result"
+                0 -> result.add("десять тысяч")
+                1 -> result.add("одиннадцать тысяч")
+                2 -> result.add("двенадцать тысяч")
+                3 -> result.add("тринадцать тысяч")
+                4 -> result.add("четырнадцать тысяч")
+                5 -> result.add("пятнадцать тысяч")
+                6 -> result.add("шестнадцать тысяч")
+                7 -> result.add("семнадцать тысяч")
+                8 -> result.add("восемнадцать тысяч")
+                9 -> result.add("девятнадцать тысяч")
             }
             c += 2
             m /= 100
             if (m == 0) break
         }
-        if ((c == 4) && ("тысяч" in result)) {
+        if (c == 4) {
             when (m % 10) {
-                2 -> result = " двадцать$result"
-                3 -> result = " тридцать$result"
-                4 -> result = " сорок$result"
-                5 -> result = " пятьдесят$result"
-                6 -> result = " шестьдесят$result"
-                7 -> result = " семьдесят$result"
-                8 -> result = " восемьдесят$result"
-                9 -> result = " девяносто$result"
-            }
-            c += 1
-            m /= 10
-            if (m == 0) break
-        } else if ((c == 4) && ("тысяч" !in result)) {
-            when (m % 10) {
-                0 -> result = " тысяч$result"
-                2 -> result = " двадцать$result"
-                3 -> result = " тридцать$result"
-                4 -> result = " сорок$result"
-                5 -> result = " пятьдесят$result"
-                6 -> result = " шестьдесят$result"
-                7 -> result = " семьдесят$result"
-                8 -> result = " восемьдесят$result"
-                9 -> result = " девяносто$result"
+                2 -> result.add("двадцать")
+                3 -> result.add("тридцать")
+                4 -> result.add("сорок")
+                5 -> result.add("пятьдесят")
+                6 -> result.add("шестьдесят")
+                7 -> result.add("семьдесят")
+                8 -> result.add("восемьдесят")
+                9 -> result.add("девяносто")
             }
             c += 1
             m /= 10
             if (m == 0) break
         }
     } while (m > 0)
-    return result.substring(1, result.length)
+    result.reverse()
+    return result.joinToString(" ")
 }

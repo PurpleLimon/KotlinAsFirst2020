@@ -73,9 +73,7 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
 fun ageDescription(age: Int): String = when {
     (age / 10 % 10 == 1) || (age % 10 == 0) || (age % 10 in 5..9) -> "$age лет"
     age % 10 == 1 -> "$age год"
-    age % 10 in 2..4 -> "$age года"
-    else -> "Ошибка"
-
+    else -> "$age года"
 }
 
 /**
@@ -177,10 +175,10 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    val X = maxOf(a, c)
-    val Y = minOf(b, d)
+    val x = maxOf(a, c)
+    val y = minOf(b, d)
     return when {
-        Y - X >= 0 -> Y - X
+        y - x >= 0 -> y - x
         else -> -1
     }
 }

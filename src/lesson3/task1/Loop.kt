@@ -190,7 +190,7 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var indicator = true
+    val indicator = true
     val minMN = min(m, n)
     for (i in 2..minMN) {
         if ((m % i == 0) && (n % i == 0)) return false
@@ -271,8 +271,7 @@ fun hasDifferentDigits(n: Int): Boolean {
     val x = m % 10
     do {
         m /= 10
-        if (x != m % 10) flag = true
-        if (flag) break
+        if (x != m % 10) {flag = true; break}
     } while (m > 9)
     return flag
 }
