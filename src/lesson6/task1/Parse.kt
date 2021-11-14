@@ -155,7 +155,7 @@ fun firstDuplicateIndex(str: String): Int {
     val str1 = str.split(" ")
     var k = 0
     if (str1.size > 1) {
-        for (i in 0..str1.size - 1) {
+        for (i in 0 until str1.size) {
             if (str1[i].lowercase(Locale.getDefault()) == str1[i + 1].lowercase(Locale.getDefault())) {
                 return k
             }
