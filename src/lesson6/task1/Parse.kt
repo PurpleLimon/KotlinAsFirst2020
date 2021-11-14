@@ -155,7 +155,7 @@ fun firstDuplicateIndex(str: String): Int {
     val str1 = str.split(" ")
     var k = 0
     if (str1.size > 1) {
-        for (i in 0 until str1.size) {
+        for (i in 0..str1.size - 1) {
             if (str1[i].lowercase(Locale.getDefault()) == str1[i + 1].lowercase(Locale.getDefault())) {
                 return k
             }
@@ -178,7 +178,7 @@ fun firstDuplicateIndex(str: String): Int {
  */
 fun mostExpensive(description: String): String {
     val list = description.split("; ")
-    var max = 0.0
+    var max = -1.0
     var name = ""
     for (i in list.indices) {
         if (list[i] == "") break
