@@ -2,7 +2,6 @@
 
 package lesson5.task1
 
-import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
@@ -105,7 +104,7 @@ fun buildGrades(grades: Map<String, Int>?): Map<Int, MutableList<String>> {
     if (grades == null) return mapOf()
     for ((name, value) in grades.entries) {
         if (gradeToStudents.contains(value)) {
-            gradeToStudents[value]?.add(name)
+            gradeToStudents[value]!!.add(name)
         } else {
             gradeToStudents[value] = mutableListOf(name)
         }
@@ -145,7 +144,7 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): MutableMap<String, String> {
-    for ((name, value) in b.entries) {
+    for ((name, _) in b.entries) {
         if (a.contains(name) && (b[name] == a[name])) {
             a.remove(name)
         }
@@ -162,9 +161,11 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): MutableMa
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
     if (a.isEmpty()) return listOf()
+    val a1 = a.toSet()
+    val b1 = b.toSet()
     val names = mutableSetOf<String>()
-    for (name in a) {
-        if (name in b) {
+    for (name in a1) {
+        if (b1.contains(name)) {
             names += name
         }
     }
@@ -214,19 +215,8 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
-    val res1 = mutableMapOf<String, MutableList<Double>>()
-    for ((name, number) in stockPrices) {
-        if (res1.contains(name)) {
-            res1[name]?.add(number)
-        } else {
-            res1[name] = mutableListOf(number)
-        }
-    }
-    val res = mutableMapOf<String, Double>()
-    for ((name, list) in res1.entries) {
-        res[name] = list.sum() / list.size
-    }
-    return res
+    val res1 = stockPrices.groupBy(keySelector = { it.first }, valueTransform = { it.second })
+    return res1.mapValues { it.value.average() }
 }
 
 /**
@@ -244,7 +234,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String = TODO()
 
 /**
  * Средняя (3 балла)
@@ -383,14 +373,14 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
     val variants = Array(treasures.size + 1) { IntArray(capacity + 1) }
-    val treasureWeight = treasures.toList().map { (name, stats) -> stats.first }
-    val treasurePrice = treasures.toList().map { (name, stats) -> stats.second }
-    val treasureName = treasures.toList().map { (name, stats) -> name }
+    val treasureWeights = treasures.toList().map { (_, stats) -> stats.first }
+    val treasurePrices = treasures.toList().map { (_, stats) -> stats.second }
+    val treasureNames = treasures.toList().map { (name, _) -> name }
     for (k in 1..treasures.size) {
         for (i in 1..capacity) {
-            if (i >= treasureWeight[k - 1]) {
+            if (i >= treasureWeights[k - 1]) {
                 variants[k][i] =
-                    max(variants[k - 1][i], variants[k - 1][i - treasureWeight[k - 1]] + treasurePrice[k - 1])
+                    max(variants[k - 1][i], variants[k - 1][i - treasureWeights[k - 1]] + treasurePrices[k - 1])
             } else variants[k][i] = variants[k - 1][i]
         }
     }
@@ -399,8 +389,8 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         if (variants[k][i] == 0) return
         return if (variants[k][i] == variants[k - 1][i]) containingTreasures(k - 1, i)
         else {
-            result.add(treasureName[k - 1])
-            containingTreasures(k - 1, i - treasureWeight[k - 1])
+            result.add(treasureNames[k - 1])
+            containingTreasures(k - 1, i - treasureWeights[k - 1])
         }
     }
     containingTreasures(treasures.size, capacity)

@@ -239,10 +239,8 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String {
-    val stringOfDivisors = factorize(n)
-    return stringOfDivisors.joinToString(separator = "*")
-}
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
+
 
 /**
  * Средняя (3 балла)
@@ -275,16 +273,16 @@ fun convert(n: Int, base: Int): List<Int> {
  */
 fun convertToString(n: Int, base: Int): String {
     val m = convert(n, base)
-    var result = ""
+    val result = StringBuilder()
     val alphabet = 'a'
-    for (i in 0 until m.size) {
+    for (i in m.indices) {
         if (m[i] > 9) {
-            result += alphabet + m[i] - 10
+            result.append(alphabet + m[i] - 10)
         } else {
-            result += m[i].toString()
+            result.append(m[i].toString())
         }
     }
-    return result
+    return result.toString()
 }
 
 /**

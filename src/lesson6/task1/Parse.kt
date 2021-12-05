@@ -154,14 +154,13 @@ fun plusMinus(expression: String): Int = TODO()
 fun firstDuplicateIndex(str: String): Int {
     val str1 = str.split(" ")
     var k = 0
-    if (str1.size > 1) {
-        for (i in 0..str1.size - 2) {
-            if (str1[i].lowercase(Locale.getDefault()) == str1[i + 1].lowercase(Locale.getDefault())) {
-                return k
-            }
-            k += str1[i].length + 1
+    for (i in 0..str1.size - 2) {
+        if (str1[i].lowercase() == str1[i + 1].lowercase()) {
+            return k
         }
+        k += str1[i].length + 1
     }
+
     return -1
 }
 
@@ -185,7 +184,7 @@ fun mostExpensive(description: String): String {
         val l = list[i].split(" ")
         val n = l[0]
         val k = l[1]
-        if (k.toDouble() > max) {
+        if (k.toDoubleOrNull()!! > max) {
             max = k.toDouble()
             name = n
         }
