@@ -156,14 +156,19 @@ fun centerFile(inputName: String, outputName: String) {
                 writer.write(" ".repeat(centre - 1))
                 writer.newLine()
             } else {
-                writer.write(" ".repeat(centre - currentLine.length / 2 - 1))
-                writer.write(currentLine)
-                writer.newLine()
+                if (currentLine.length == 3) {
+                    writer.write(" ".repeat(centre - currentLine.length / 2 - 2))
+                    writer.write(currentLine)
+                    writer.newLine()
+                } else {
+                    writer.write(" ".repeat(centre - currentLine.length / 2 - 1))
+                    writer.write(currentLine)
+                    writer.newLine()
+                }
             }
         }
     }
 }
-
 
 
 /**
