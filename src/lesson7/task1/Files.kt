@@ -156,7 +156,7 @@ fun centerFile(inputName: String, outputName: String) {
                 writer.write(" ".repeat(centre - 1))
                 writer.newLine()
             } else {
-                if (currentLine.length == 3) {
+                if ((currentLine.length == 3) && (max != 3)) {
                     writer.write(" ".repeat(centre - currentLine.length / 2 - 2))
                     writer.write(currentLine)
                     writer.newLine()
