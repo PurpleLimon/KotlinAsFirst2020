@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson4.task1.russian
+import java.lang.Exception
 import java.util.*
 
 // Урок 6: разбор строк, исключения
@@ -243,3 +245,22 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+
+fun wedding(marks: List<String>, cost: Int): Int {
+    var costs = 0
+    for (i in marks) {
+        // 10
+        if (i.matches(Regex("[а-я-А-Яa-z-A-Z]+\\+[а-я]+"))) {
+            val (_, k) = i.split("+")
+            for (i in 0..10) {
+                if (k == russian(i)) {
+                    costs += (i * cost)
+                }
+            }
+        } else {
+            throw IllegalArgumentException()
+        }
+    }
+    return costs
+}
