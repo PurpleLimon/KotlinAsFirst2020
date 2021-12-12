@@ -149,10 +149,10 @@ fun centerFile(inputName: String, outputName: String) {
         if (line.trim().length > max) max = line.trim().length
     }
     var centre = 0
-    if (max % 2 == 0) {
-        centre = max / 2
+    centre = if (max % 2 == 0) {
+        max / 2
     } else {
-        centre = max / 2 + 1
+        max / 2 + 1
     }
     writer.use {
         for (line in lines) {
@@ -160,13 +160,15 @@ fun centerFile(inputName: String, outputName: String) {
             if (line.isEmpty()) {
                 writer.write(" ".repeat(centre - 1))
                 writer.newLine()
-            } else if (currentLine.length <= 2) {
-                writer.write(currentLine)
-                writer.newLine()
             } else {
-                writer.write(" ".repeat(centre - currentLine.length / 2 - 1))
-                writer.write(currentLine)
-                writer.newLine()
+                if (centre - (currentLine.length / 2) <= 2) {
+                    writer.write(currentLine)
+                    writer.newLine()
+                } else {
+                    writer.write(" ".repeat(centre - currentLine.length / 2 - 1))
+                    writer.write(currentLine)
+                    writer.newLine()
+                }
             }
         }
     }
