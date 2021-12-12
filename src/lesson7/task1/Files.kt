@@ -161,15 +161,20 @@ fun centerFile(inputName: String, outputName: String) {
                     writer.write(currentLine)
                     writer.newLine()
                 } else {
-                    writer.write(" ".repeat(centre - currentLine.length / 2 - 1))
-                    writer.write(currentLine)
-                    writer.newLine()
+                    if ((max % 2 == 0) && (currentLine.length % 2 == 1)) {
+                        writer.write(" ".repeat(centre - currentLine.length / 2 - 2))
+                        writer.write(currentLine)
+                        writer.newLine()
+                    } else {
+                        writer.write(" ".repeat(centre - currentLine.length / 2 - 1))
+                        writer.write(currentLine)
+                        writer.newLine()
+                    }
                 }
             }
         }
     }
 }
-
 
 /**
  * Сложная (20 баллов)
