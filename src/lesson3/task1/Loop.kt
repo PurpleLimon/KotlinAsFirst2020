@@ -271,7 +271,9 @@ fun hasDifferentDigits(n: Int): Boolean {
     val x = m % 10
     do {
         m /= 10
-        if (x != m % 10) {flag = true; break}
+        if (x != m % 10) {
+            flag = true; break
+        }
     } while (m > 9)
     return flag
 }
@@ -343,10 +345,8 @@ fun fibSequenceDigit(n: Int): Int {
 
 private fun fibN(k: Int, n: Int, fibNumber: Int): Int {
     var fibNumber1 = fibNumber
-    return if (k == n) fibNumber1 % 10
-    else {
-        fibNumber1 /= ((10.0).pow((k - n).toDouble())).toInt()
-        fibNumber1 % 10
-    }
+    fibNumber1 /= ((10.0).pow((k - n).toDouble())).toInt()
+    return fibNumber1 % 10
+
 }
 

@@ -185,8 +185,8 @@ fun mostExpensive(description: String): String {
         if (list[i] == "") break
         val l = list[i].split(" ")
         val n = l[0]
-        val k = l[1]
-        if (k.toDoubleOrNull()!! > max) {
+        val k = l[1].toDoubleOrNull()
+        if ((k != null) && (k.toDouble() > max)) {
             max = k.toDouble()
             name = n
         }
