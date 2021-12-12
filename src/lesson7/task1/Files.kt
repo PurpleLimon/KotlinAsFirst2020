@@ -2,8 +2,10 @@
 
 package lesson7.task1
 
+import lesson4.task1.center
 import ru.spbstu.wheels.NullableMonad.filter
 import java.io.File
+import kotlin.math.round
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -119,7 +121,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-
+    TODO()
 }
 
 /**
@@ -140,8 +142,37 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    var max = -1
+    val lines = File(inputName).readLines()
+    for (line in lines) {
+        if (line.trim().length > max) max = line.trim().length
+    }
+    var centre = 0
+    if (max % 2 == 0) {
+        centre = max / 2
+    } else {
+        centre = max / 2 + 1
+    }
+    writer.use {
+        for (line in lines) {
+            val currentLine = line.trim()
+            if (line.isEmpty()) {
+                writer.write("".repeat(centre))
+            }
+            if ((max % 2 == 0 && currentLine.length % 2 == 0) || (max % 2 == 1 && currentLine.length % 2 == 1)) {
+                writer.write(" ".repeat(centre - currentLine.length / 2 - 1))
+                writer.write(currentLine)
+                writer.newLine()
+            } else {
+                writer.write(" ".repeat(centre - currentLine.length / 2 - 1))
+                writer.write(currentLine)
+                writer.newLine()
+            }
+        }
+    }
 }
+
 
 /**
  * Сложная (20 баллов)
@@ -309,7 +340,30 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    writer.write("<html><body>")
+    var indCursive = false
+    var indBold = false
+    var indStriketThrough = false
+    var betweenEmpty = false
+    writer.use {
+        File(inputName).forEachLine { it ->
+            while (it.isEmpty()) {
+                writer.newLine()
+                betweenEmpty = true
+            }
+            val lineWords = it.split(" ")
+            if (betweenEmpty) {
+                writer.write("<p>")
+                for (word in lineWords) {
+                    if ("*" in word && !indCursive) {
+                        writer.write(word.replace("*", "<i>"))
+                    }
+                }
+            }
+        }
+    }
+    writer.write("</body></html>")
 }
 
 /**
