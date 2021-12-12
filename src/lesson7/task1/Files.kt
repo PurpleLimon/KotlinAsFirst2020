@@ -158,11 +158,7 @@ fun centerFile(inputName: String, outputName: String) {
         for (line in lines) {
             val currentLine = line.trim()
             if (line.isEmpty()) {
-                writer.write("".repeat(centre))
-            }
-            if ((max % 2 == 0 && currentLine.length % 2 == 0) || (max % 2 == 1 && currentLine.length % 2 == 1)) {
-                writer.write(" ".repeat(centre - currentLine.length / 2 - 1))
-                writer.write(currentLine)
+                writer.write(" ".repeat(centre - 1))
                 writer.newLine()
             } else {
                 writer.write(" ".repeat(centre - currentLine.length / 2 - 1))
@@ -172,6 +168,7 @@ fun centerFile(inputName: String, outputName: String) {
         }
     }
 }
+
 
 
 /**
