@@ -133,7 +133,7 @@ fun abs(v: List<Double>): Double {
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double{
+fun mean(list: List<Double>): Double {
     var s = 0.0
     for (i in 0 until list.size) {
         s += list[i]
@@ -377,7 +377,8 @@ fun russian(n: Int): String {
             m /= 10
             c += 1
             if (m == 0) break
-        } else if (((m / 10) % 10 == 1) && (c == 0)) {
+        } else if (((m / 10) % 10 == 1) && ((c == 0) || (c == 3))) {
+            if (c == 3) result.add("тысяч")
             when (m % 10) {
                 0 -> result.add("десять")
                 1 -> result.add("одиннадцать")
@@ -394,7 +395,7 @@ fun russian(n: Int): String {
             c += 2
             if (m == 0) break
         }
-        if (c == 1) {
+        if ((c == 1) || (c == 4)) {
             when (m % 10) {
                 2 -> result.add("двадцать")
                 3 -> result.add("тридцать")
@@ -440,37 +441,6 @@ fun russian(n: Int): String {
             }
             m /= 10
             c += 1
-            if (m == 0) break
-        } else if (((m / 10) % 10 == 1) && (c == 3)) {
-            when (m % 10) {
-                0 -> result.add("десять тысяч")
-                1 -> result.add("одиннадцать тысяч")
-                2 -> result.add("двенадцать тысяч")
-                3 -> result.add("тринадцать тысяч")
-                4 -> result.add("четырнадцать тысяч")
-                5 -> result.add("пятнадцать тысяч")
-                6 -> result.add("шестнадцать тысяч")
-                7 -> result.add("семнадцать тысяч")
-                8 -> result.add("восемнадцать тысяч")
-                9 -> result.add("девятнадцать тысяч")
-            }
-            c += 2
-            m /= 100
-            if (m == 0) break
-        }
-        if (c == 4) {
-            when (m % 10) {
-                2 -> result.add("двадцать")
-                3 -> result.add("тридцать")
-                4 -> result.add("сорок")
-                5 -> result.add("пятьдесят")
-                6 -> result.add("шестьдесят")
-                7 -> result.add("семьдесят")
-                8 -> result.add("восемьдесят")
-                9 -> result.add("девяносто")
-            }
-            c += 1
-            m /= 10
             if (m == 0) break
         }
     } while (m > 0)
