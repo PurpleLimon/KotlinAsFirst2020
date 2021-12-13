@@ -151,7 +151,7 @@ fun centerFile(inputName: String, outputName: String) {
     writer.use {
         for (line in lines) {
             val currentLine = line.trim()
-            if ((currentLine.length == 3) && (max != 3)) {
+            if ((currentLine.length == 3) && (max != 3) && (max % 2 == 0)) {
                 writer.write(" ".repeat((max - currentLine.length) / 2 - 1))
                 writer.write(currentLine)
                 writer.newLine()
