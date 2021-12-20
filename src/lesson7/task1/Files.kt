@@ -151,16 +151,15 @@ fun centerFile(inputName: String, outputName: String) {
     writer.use {
         for (line in lines) {
             val currentLine = line.trim()
-            if ((currentLine.length == 3) && (max != 3) && (max % 2 == 0)) {
+            if ((currentLine.length == 3) && (max != 3) && (max % 2 == 1)) {
                 writer.write(" ".repeat((max - currentLine.length) / 2 - 1))
-                writer.write(currentLine)
-                writer.newLine()
             } else {
                 writer.write(" ".repeat((max - currentLine.length) / 2))
-                writer.write(currentLine)
-                writer.newLine()
             }
+            writer.write(currentLine)
+            writer.newLine()
         }
+
     }
 }
 
