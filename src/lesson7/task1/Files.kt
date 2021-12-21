@@ -324,31 +324,8 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  *
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
-fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    val writer = File(outputName).bufferedWriter()
-    writer.write("<html><body>")
-    var indCursive = false
-    var indBold = false
-    var indStriketThrough = false
-    var betweenEmpty = false
-    writer.use {
-        File(inputName).forEachLine { it ->
-            while (it.isEmpty()) {
-                writer.newLine()
-                betweenEmpty = true
-            }
-            val lineWords = it.split(" ")
-            if (betweenEmpty) {
-                writer.write("<p>")
-                for (word in lineWords) {
-                    if ("*" in word && !indCursive) {
-                        writer.write(word.replace("*", "<i>"))
-                    }
-                }
-            }
-        }
-    }
-    writer.write("</body></html>")
+fun markdownToHtmlSimple(inputName: String, outputName: String) = {
+    TODO()
 }
 
 /**
