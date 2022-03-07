@@ -2,12 +2,12 @@
 
 package lesson7.task1
 
+<<<<<<< HEAD
 import java.io.BufferedWriter
 import java.io.File
 import java.lang.IllegalArgumentException
 import java.util.*
 import kotlin.math.max
-
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
 // Максимальное количество баллов = 55
@@ -83,8 +83,24 @@ fun deleteMarked(inputName: String, outputName: String) =
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
-
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val map = mutableMapOf<String, Int>()
+    val newList = substrings.toSet()
+    for (str in newList) map[str] = 0
+    for (line in File(inputName).readLines())
+        for (str in newList) {
+            var searchIndex = 0
+            val lowerString = line.lowercase()
+            val strFind = str.lowercase()
+            var ind = lowerString.indexOf(strFind, searchIndex)
+            while (ind != -1) {
+                map[str] = map[str]!! + 1
+                searchIndex = ind + 1
+                ind = lowerString.indexOf(strFind, searchIndex)
+            }
+        }
+    return map
+}
 
 /**
  * Средняя (12 баллов)
@@ -121,7 +137,21 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    var max = 0
+    val lines = File(inputName).readLines()
+    for (line in lines) {
+        if (line.trim().length > max) max = line.trim().length
+    }
+    writer.use {
+        for (line in lines) {
+            val currentLine = line.trim()
+            for (i in 1..(max - currentLine.length) / 2) writer.write(" ")
+            writer.write(currentLine)
+            writer.newLine()
+        }
+
+    }
 }
 
 /**

@@ -6,6 +6,9 @@ import ru.spbstu.wheels.defaultCopy
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.collections.sortedByDescending as sortedByDescending1
+import kotlin.math.max
+import kotlin.math.min
+
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
@@ -179,7 +182,6 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
     for ((key, value) in mapB) {
         res[key] = res[key]?.plus(if (res[key] == value) "" else ", $value") ?: value
     }
-
     return res
 }
 
@@ -194,11 +196,8 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
-    val costs = mutableMapOf<String, List<Double>>()
-    for ((first, second) in stockPrices) {
-        costs[first] = costs[first]?.plus(second) ?: listOf(second)
-    }
-    return costs.mapValues { it.value.average() }
+    val res1 = stockPrices.groupBy(keySelector = { it.first }, valueTransform = { it.second })
+    return res1.mapValues { it.value.average() }
 }
 
 /**
@@ -216,7 +215,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String = TODO()
 
 /**
  * Средняя (3 балла)
@@ -355,7 +354,6 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
 
     return -1 to -1
 }
-
 /**
  * Очень сложная (8 баллов)
  *
@@ -378,8 +376,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *   ) -> emptySet()
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-
-    val count = treasures.size
+   val count = treasures.size
 
     val associatedTreasures = treasures.keys.toList()
     val costs = MutableList(count + 1) { MutableList(capacity + 1) { 0 to setOf<String>() } }

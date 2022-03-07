@@ -4,6 +4,8 @@ package lesson2.task2
 
 import lesson1.task1.sqr
 import kotlin.math.abs
+import java.lang.Math.abs
+import java.lang.Math.sqrt
 import kotlin.math.max
 import kotlin.math.min
 
@@ -37,8 +39,6 @@ fun isNumberHappy(number: Int): Boolean {
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
     (x1 == x2) || (y1 == y2) || (abs(x1 - x2) == abs(y1 - y2))
-
-
 /**
  * Простая (2 балла)
  *
@@ -54,7 +54,6 @@ fun daysInMonth(month: Int, year: Int): Int {
         else -> 30
     }
 }
-
 /**
  * Простая (2 балла)
  *
@@ -76,16 +75,5 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    val minSizeFirst = min(a, min(b, c))
-    val minSizeSecond = when (minSizeFirst) {
-        a -> min(b, c)
-        b -> min(a, c)
-        else -> min(a, b)
-    }
-    val minHoleSize = min(r, s)
-    val maxHoleSize = max(r, s)
-
-    return minSizeFirst <= minHoleSize && minSizeSecond <= maxHoleSize
-
-}
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
+       ((a + b + c - maxOf(a, b, c) - minOf(a, b, c)) <= max(r, s)) && (minOf(a, b, c) <= min(r, s))

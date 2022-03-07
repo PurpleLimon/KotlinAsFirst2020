@@ -5,6 +5,10 @@ package lesson6.task1
 import lesson2.task2.daysInMonth
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
+import junit.framework.Assert.assertEquals
+import lesson4.task1.russian
+import org.junit.Test
+import java.lang.StringBuilder
 import java.util.*
 
 // Урок 6: разбор строк, исключения
@@ -202,7 +206,18 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val str1 = str.split(" ")
+    var k = 0
+    for (i in 0..str1.size - 2) {
+        if (str1[i].lowercase() == str1[i + 1].lowercase()) {
+            return k
+        }
+        k += str1[i].length + 1
+    }
+
+    return -1
+}
 
 /**
  * Сложная (6 баллов)
@@ -215,7 +230,25 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    var name = ""
+    if (description.matches(Regex(".+\\s[0-9]+\\.[0-9]+(;.+\\s[0-9]+\\.[0-9]+)+||.+\\s[0-9]+\\.[0-9]+||.+\\s\\d+"))) {
+        val list = description.split("; ")
+        var max = -1.0
+        for (i in list.indices) {
+            if (list[i].isEmpty()) break
+            val l = list[i].split(" ")
+            val n = l[0]
+            val k = l[1].toDoubleOrNull()
+            if ((k != null) && (k.toDouble() > max)) {
+                max = k.toDouble()
+                name = n
+            }
+        }
+    }
+    return name
+}
+
 
 /**
  * Сложная (6 баллов)
@@ -266,6 +299,7 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
+<<<<<<< HEAD
 
 fun isValidCommands(commands: String): Boolean {
     val chars = "+-><[ ]"
@@ -355,4 +389,62 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     }
 
     return values
+}
+
+fun wedding(marks: List<String>, cost: Int): Int {
+    var costs = 0
+    for (i in marks) {
+        // 10
+        if (i.matches(Regex(".+\\+.+"))) {
+            val (_, k) = i.split("+")
+            for (i in 0..10) {
+                if (k == russian(i)) {
+                    costs += (i * cost)
+                }
+            }
+            costs += cost
+        } else {
+            throw IllegalArgumentException()
+        }
+    }
+    return costs
+}
+
+@Test
+fun wedding() {
+    assertEquals(170, wedding(listOf("Денис+10", "Опапа+5"), 10))
+}
+
+fun myFun(addresses: List<String>, person: String): MutableList<String>? {
+    val listOfMates = mutableMapOf<String, MutableList<String>>()
+    var personAddress = StringBuilder()
+    for (address in addresses) {
+        address.replace("  ", " ")
+        if (address.matches(Regex("(.)+\\s(.)+:(\\s.+)+,\\s.+,\\sкв.\\s.+"))) {
+            val (name, _) = address.split(":")
+            if (name == person) {
+                val resultAddress = address.split(",")
+                val resAddress = resultAddress[0].split(" ").subList(2, resultAddress.lastIndex)
+                for (i in resAddress) {
+                    personAddress.append(i)
+                    personAddress.append(" ")
+                }
+            } else {
+                val currAddress = address.split(",")
+                val currentAddress = currAddress[0].split(":").subList(1, currAddress.lastIndex)
+                val mateAddress = StringBuilder().append(currentAddress.joinToString())
+                mateAddress.append(currAddress[1])
+                mateAddress.append(" ")
+                if (listOfMates.contains(mateAddress.trim())) {
+                    listOfMates[mateAddress.trim().toString()]?.add(name)
+
+                } else {
+                    listOfMates[mateAddress.trim().toString()] = mutableListOf(name)
+                }
+            }
+        } else {
+            throw IllegalArgumentException()
+        }
+    }
+    return listOfMates[personAddress.toString().trim()]
 }

@@ -3,6 +3,9 @@
 package lesson3.task1
 
 import kotlin.math.abs
+import java.lang.StrictMath.min
+import kotlin.math.abs
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -21,7 +24,7 @@ import kotlin.math.sqrt
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result = result * i // Please do not fix in master
+        result *= i // Please do not fix in master
     }
     return result
 }
@@ -210,6 +213,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
+<<<<<<< HEAD
 fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
@@ -274,7 +278,17 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var k = 0
+    var sqrNumber: Int
+    var i = 1
+    do {
+        sqrNumber = i * i
+        k += digitNumber(sqrNumber)
+        i += 1
+    } while (k < n)
+    return fibN(k, n, sqrNumber)
+}
 
 /**
  * Сложная (5 баллов)
@@ -286,25 +300,21 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    if (n == 1 || n == 2)
-        return 1
+    var k = 2
+    var i = 3
+    var fibNumber: Int
+    if ((n == 1) || (n == 2)) return 1
+    do {
+        fibNumber = fib(i)
+        k += digitNumber(fibNumber)
+        i += 1
+    } while (k < n)
+    return fibN(k, n, fibNumber)
+}
 
-    var a = 1
-    var b = 1
-    var c = 0
-    var numCount = 2
+private fun fibN(k: Int, n: Int, fibNumber: Int): Int {
+    var fibNumber1 = fibNumber
+    fibNumber1 /= ((10.0).pow((k - n).toDouble())).toInt()
+    return fibNumber1 % 10
 
-    while (numCount < n) {
-        c = a + b
-        a = b
-        b = c
-        numCount += digitNumber(c)
-    }
-
-    val searchedIndex = numCount - n
-
-    for (i in 1..searchedIndex)
-        c /= 10
-
-    return c % 10
 }

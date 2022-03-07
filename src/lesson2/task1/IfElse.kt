@@ -3,6 +3,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -70,12 +71,11 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String =
-    when {
-        age % 10 in 5..9 || age % 10 == 0 || age % 100 in 11..19 -> "$age лет"
-        age % 10 == 1 -> "$age год"
-        else -> "$age года"
-    }
+fun ageDescription(age: Int): String = when {
+    (age / 10 % 10 == 1) || (age % 10 == 0) || (age % 10 in 5..9) -> "$age лет"
+    age % 10 == 1 -> "$age год"
+    else -> "$age года"
+}
 
 /**
  * Простая (2 балла)
@@ -133,7 +133,14 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int = TODO()
+): Int =
+    when {
+        rookX != kingX && kingY != rookY && (abs(kingX - bishopX) != abs(kingY - bishopY)) -> 0
+        (rookX == kingX || kingY == rookY) && (abs(kingX - bishopX) != abs(kingY - bishopY)) -> 1
+        (rookX != kingX && kingY != rookY) && (abs(kingX - bishopX) == abs(kingY - bishopY)) -> 2
+        else -> 3
+    }
+
 
 /**
  * Простая (2 балла)
@@ -161,12 +168,11 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int =
-    when {
-        (a <= c) && (c <= b) && (b <= d) -> b - c   // ACBD
-        (a <= c) && (d <= b) -> d - c               // (c <= d) = true; ACDB
-        (c <= a) && (b <= d) -> b - a               // (a <= b) = true; CABD
-        (c <= a) && (a <= d) && (d <= b) -> d - a   // CADB
-
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    val x = maxOf(a, c)
+    val y = minOf(b, d)
+    return when {
+        y - x >= 0 -> y - x
         else -> -1
     }
+}
