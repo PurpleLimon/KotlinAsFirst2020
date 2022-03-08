@@ -24,3 +24,9 @@
 17. git commit -m 'remotes.txt added'
 18. git add howto.md
 19. git commit -m 'howto.md added'
+20. git remote set-url origin git@github.com:PurpleLimon/KotlinAsFirst2020
+21. ssh-keygen -t ed25519 -C "my_email@mail.ru"
+22. eval "@(ssh-agent -s)"
+23. ssh-add id_ed25519
+24. Some stuff on github.com to add SSH key
+25. git push origin
